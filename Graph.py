@@ -6,29 +6,6 @@ class Graph:
             nodeLabels={}
         self.nodeLabels=nodeLabels
 
-    def findPath(self,st,dt):
-        paths=[]
-        def find(st, dt, vis, trck):
-            if st != dt:
-                if not vis[dt]:
-                    if sum(self.matrix[dt]):
-                        pths = [False if i == 0 else True for i in self.matrix[dt]]
-                        for i in range(len(pths)):
-                            if pths[i]:
-                                temp = vis[:]
-                                temp[dt] = True
-                                t = trck[:]
-                                t.append(dt)
-                                find(st, i, temp, t)
-            else:
-                trck.append(dt)
-                paths.append(trck)
-        try:
-            find(st,dt,[False] * len(self.matrix),[])
-        except IndexError:
-            return False
-        return paths
-
     def findShortPath(self,st,dt):
         paths={}
         def find(st, dt, vis, cst, trck):
@@ -104,9 +81,8 @@ class Graph:
                 vis.append(n)
                 [t.append(ll) for ll in nb]
                 for i in nb:
-                    if i!=node:
-                        if not links.get(str((node,i))):
-                            links[str((node, i))] = d
+                    if not links.get(str((node,i))):
+                        links[str((node, i))] = d
             q.append(t)
             d+=1
         return links

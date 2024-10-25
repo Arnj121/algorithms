@@ -1,11 +1,8 @@
 class Graph2:
-    def __init__(self,connections,datasource,nodeLabels=None):
+    def __init__(self,connections,datasource,id):
         self.connections=connections
-        if nodeLabels is None:
-            nodeLabels={}
-        self.nodeLabels=nodeLabels
         self.datasource=datasource
-
+        self.id=id
     def findPath(self,st,dt):
         paths=[]
         def find(st, dt, vis, trck):
@@ -55,33 +52,24 @@ class Graph2:
         return [list(paths.keys())[list(paths.values()).index(min(paths.values()))],min(paths.values())]
 
 
-    def setLabels(self,names):
-        if len(names) != len(self.matrix):
-            return
-        self.nodeLabels = {i:names[i] for i in range(len(names))}
-
-    def getNeighbors(self,node,degree=1):
+    def getNeighbors(self,degree=1):
         vis=[]
         def getn(n):
             l=[]
-            [l.append(i) if i not in vis else None for i in range(len(self.datasource(n)))]
+            [l.append(i) if i not in vis else None for i in self.datasource(n)]
             return l
         links = {}
         d=1
-        q=[self.connections]
+        q=[[self.id]]
         while d<=degree and len(q):
             t=[]
             for n in q[d-1]:
-                nb = getn(n)
                 vis.append(n)
+                nb = getn(n)
                 [t.append(ll) for ll in nb]
                 for i in nb:
-                    if i!=node:
-                        if not links.get(str((node,i))):
-                            links[str((node, i))] = d
+                    if not links.get(str((self.id,i))):
+                        links[str((self.id, i))] = d
             q.append(t)
             d+=1
         return links
-
-    def getLabel(self,node):
-        return self.nodeLabels[node]

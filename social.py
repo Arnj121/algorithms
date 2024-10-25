@@ -1,38 +1,25 @@
 from Graph2 import Graph2
 import  pprint
+import random
 
-matrix=[[0, 1, 0, 0, 1, 0, 0, 0, 0, 0],  # Friend 1 knows Friend 2 and Friend 5
-    [1, 0, 1, 0, 0, 1, 0, 0, 0, 0],  # Friend 2 knows Friend 1, 3, and 6
-    [0, 1, 0, 1, 0, 0, 1, 0, 0, 0],  # Friend 3 knows Friend 2, 4, and 7
-    [0, 0, 1, 0, 0, 0, 0, 1, 0, 0],  # Friend 4 knows Friend 3 and 8
-    [1, 0, 0, 0, 0, 1, 0, 0, 0, 0],  # Friend 5 knows Friend 1 and 6
-    [0, 1, 0, 0, 1, 0, 0, 1, 0, 0],  # Friend 6 knows Friend 2, 5, and 8
-    [0, 0, 1, 0, 0, 0, 0, 1, 1, 0],  # Friend 7 knows Friend 3, 8, and 9
-    [0, 0, 0, 1, 0, 1, 1, 0, 1, 0],  # Friend 8 knows Friend 4, 6, 7, and 9
-    [0, 0, 0, 0, 0, 0, 1, 1, 0, 1],  # Friend 9 knows Friend 7, 8, and 10
-    [0, 0, 0, 0, 0, 0, 0, 0, 1, 0],  # Friend 10 knows Friend 9
-]
-adlist={
-    0: [1, 4],       # Friend 1 knows Friend 2 and Friend 5
-    1: [0, 2, 5],    # Friend 2 knows Friend 1, 3, and 6
-    2: [1, 3, 6],    # Friend 3 knows Friend 2, 4, and 7
-    3: [2, 7],       # Friend 4 knows Friend 3 and 8
-    4: [0, 5],       # Friend 5 knows Friend 1 and 6
-    5: [1, 4, 7],    # Friend 6 knows Friend 2, 5, and 8
-    6: [2, 7, 8],    # Friend 7 knows Friend 3, 8, and 9
-    7: [3, 5, 6, 8], # Friend 8 knows Friend 4, 6, 7, and 9
-    8: [6, 7, 9],    # Friend 9 knows Friend 7, 8, and 10
-    9: [8]           # Friend 10 knows Friend 9
-}
+def generateFriends(n,c):
+    adjacency_list = {i: set() for i in range(n)}
+    for friend in range(n):
+        tc=random.randint(int(c/2),c)
+        while len(adjacency_list[friend]) < tc:
+            connect_friend = random.randint(0, n - 1)
+            if connect_friend != friend and connect_friend not in adjacency_list[friend]:
+                adjacency_list[friend].add(connect_friend)
+                adjacency_list[connect_friend].add(friend)
 
+    adjacency_list = {friend: list(connections) for friend, connections in adjacency_list.items()}
+    pprint.pprint(adjacency_list)
+    return adjacency_list
 
-# g=Graph(matrix)
-
-friends=["Friend1", "Friend2", "Friend3", "Friend4", "Friend5",
-           "Friend6", "Friend7", "Friend8", "Friend9", "Friend10"]
+alist=generateFriends(10,3)
 
 def datasource(args):
-    return adlist[args]
+    return alist[args]
 
-g2=Graph2(adlist[0],datasource)
-print(g2.connections)
+g2 = Graph2(alist[0],datasource,0)
+pprint.pprint(g2.getNeighbors(4))

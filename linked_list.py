@@ -16,6 +16,7 @@ class LList:
         self.head=head
         self.len=0
         self.tail=head
+        self.temp=None
         self.cyclic=False
         if type(head) == type([]):
             self.makefromList(head)
@@ -138,3 +139,11 @@ class LList:
                 forw=temp
         self.head=forw
         return self
+
+    def next(self):
+        if self.temp is None:
+            self.temp=self.head
+            return self.temp
+        self.temp=self.temp.next
+        return self.temp
+
