@@ -1,6 +1,7 @@
 from Graph2 import Graph2
 import  pprint
 import random
+from tree import Tree
 
 def generateFriends(n,c):
     adjacency_list = {i: set() for i in range(n)}
@@ -16,10 +17,22 @@ def generateFriends(n,c):
     pprint.pprint(adjacency_list)
     return adjacency_list
 
-alist=generateFriends(10,3)
+# alist=generateFriends(10,3)
 
-def datasource(args):
-    return alist[args]
+# def datasource(args):
+#     return alist[args]
 
-g2 = Graph2(alist[0],datasource,0)
-pprint.pprint(g2.getNeighbors(4))
+l={
+    0:[1,2,3],
+    1:[4,5],
+    2:[6,7],
+    3:[8,9,10],
+    4:[11],
+    6:[12,13],
+    8:[14,15],
+    10:[16,17],
+}
+
+tree=Tree(l,0)
+tree.insert(6,18)
+print(tree.search(9))
